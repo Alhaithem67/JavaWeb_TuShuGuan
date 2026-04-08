@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .center{
+            text-align: center;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 1px solid #333;
+        }
+        td {
+            border: 1px solid #333;
+            padding: 10px 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <img src="/image/IMG_3982.jpg" alt="" width="200"><br>
+    <p>请输入您要查询的图书的ID:</p>
+    <input type="text" id="bookId">
+    <button onclick="searchBook()">查询</button>
+</div>
+<div id="result" class="center"></div>
+<div class="center"><button onclick="borrowBookById()">借阅此书</button></div>
+<div class="center"><button onclick="history.back()" style="margin:10px;">返回上一页</button></div>
+<script>
+    function searchBook(){
+        let id=document.getElementById("bookId").value;
+        fetch('http://localhost:8080/book/selectById?id='+id)
+            .then(respon=>respon.json())
+            .then(data=>{
+                console.log(data);
+                if(data){
+                    document.getElementById("result").innerHTML=`
+               <table class="center">
+            <tr>
+                <td colspan="2"><h3>查询结果</h3></td>    
+            </tr>
+            <tr>
+                <td>ID</td>
+                <td>${data.bookId}</td>
+            </tr>    
+            <tr>
+                <td>名称</td>
+                <td>${data.bookName}</td>
+            </tr>
+            <tr>
+                <td>位置</td>
+                <td>${data.bookPlace}</td>
+            </tr> 
+            <tr>
+                <td>状态</td>
+                <td>${data.bookState}</td>
+            </tr>  
+    </table>
+            `}else{
+                    document.getElementById("result").innerHTML="<p>未找到该图书</p>"
+                }
+            })
+            // 👇 第二个关键修复：捕获崩溃错误
+            .catch(err => {
+                console.log("错误：", err);
+                document.getElementById("result").innerHTML = "<h2 style='color:red' class='center'>未找到该图书</h2>";
+            });
+    }
+    function borrowBookById(){
+        let id=document.getElementById("bookId").value;
+        fetch('http://localhost:8080/book/borrowBook?id='+id)
+            .then(res=>res.json())
+            .then(data=>{
+                console.log(data);
+                if(data==1){
+                    alert("借阅成功")
+                    location.reload();
+                }else{
+                    alert("抱歉,这本书已借出")
+                    location.reload();
+                }
+            })
+    }
+</script>
+</body>
+</html>

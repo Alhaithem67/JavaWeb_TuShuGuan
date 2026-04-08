@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .center{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <img src="/image/IMG_3976.jpg" alt="图片">
+    <p>请输入您要借阅的图书的ID</p>
+    <input type="text" id="bookId">
+    <button onclick="borrowBook()">确定</button>
+</div>
+<div id="result" class="center"></div>
+<div class="center"><button onclick="history.back()" style="margin:10px;">返回上一页</button></div>
+<script>
+    function borrowBook(){
+        let id=document.getElementById("bookId").value;
+        fetch('http://localhost:8080/book/borrowBook?id='+id)
+            .then(res=>res.json())
+            .then(data=>{
+                console.log(data);
+                if(data==1){
+                    document.getElementById("result").innerHTML="<p>借阅成功</p>"
+                }else{
+                    document.getElementById("result").innerHTML="<p>抱歉,这本书已借出</p>"
+                }
+            })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .center{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>用户注册页面</h1>
+        <img src="/image/IMG_4035.JPG" alt="你好,新人" width="200px"><br>
+        请输入用户名:<input type="text" id="name"><br>
+        请输入密码:<input type="text" id="password"><br>
+        <button onclick="ok()">确定</button>
+        <button onclick="reset()">重置</button>
+    </div>
+    <script>
+        function ok(){
+            let name=document.getElementById("name").value;
+            let password=document.getElementById("password").value;
+        fetch('http://localhost:8080/user/register?name='+name+'&password='+password)
+        .then(res=>res.json())
+        .then(data=>{
+            if(data==1){
+                alert("注册成功")
+                window.location.href='user_load.html'
+            }else{
+                alert("注册失败")
+            }
+
+        })
+        }
+    </script>
+</body>
+</html>

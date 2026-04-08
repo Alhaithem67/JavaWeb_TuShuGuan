@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .center{
+            text-align: center;
+            margin-top: 30px;
+        }
+        /* 弹窗遮罩层 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 999;
+        }
+        /* 弹窗内容 */
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        /* 弹窗图片 */
+        .success-img, .fail-img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <p>请输入您要归还的图书的ID</p>
+    <input type="text" id="bookId">
+    <button onclick="returnBook()">确定</button>
+</div>
+
+<!-- 归还成功弹窗 -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <img src="/image/IMG_3978.jpg" class="success-img" alt="归还成功">
+        <h2>✅ 归还成功</h2>
+        <button onclick="closeModal()">关闭</button>
+    </div>
+</div>
+
+<!-- 归还失败弹窗（新增） -->
+<div id="failModal" class="modal">
+    <div class="modal-content">
+        <!-- 这里替换成你的失败图片链接 -->
+        <img src="/image/IMG_4033.jpg" class="fail-img" alt="归还失败">
+        <h2>❌ 归还失败</h2>
+        <p>请检查图书ID是否正确</p>
+        <button onclick="closeFailModal()">关闭</button>
+    </div>
+</div>
+
+<div class="center">
+    <button onclick="history.back()" style="margin:10px;">返回上一页</button>
+</div>
+
+<script>
+    // 归还图书
+    function returnBook(){
+        let id = document.getElementById("bookId").value;
+
+        // 空值判断
+        if(!id){
+            alert("请输入图书ID！");
+            return;
+        }
+
+        fetch('http://localhost:8080/book/returnBook?id='+id)
+            .then(res=>res.json())
+            .then(data=>{
+                console.log(data);
+                if(data == 1){
+                    // 弹出成功图片弹窗
+                    document.getElementById("successModal").style.display = "block";
+                }else{
+                    // 弹出失败图片弹窗（替换原来的alert）
+                    document.getElementById("failModal").style.display = "block";
+                }
+            })
+            .catch(err=>{
+                // 网络错误也弹出失败弹窗
+                document.getElementById("failModal").style.display = "block";
+                console.error(err);
+            })
+    }
+
+    // 关闭成功弹窗
+    function closeModal(){
+        document.getElementById("successModal").style.display = "none";
+    }
+
+    // 关闭失败弹窗（新增）
+    function closeFailModal(){
+        document.getElementById("failModal").style.display = "none";
+    }
+</script>
+</body>
+</html>
