@@ -23,12 +23,18 @@
 ---
 
 ## 项目结构
-src/
+src/ 
+
 ├── main/
+
 │ ├── java/ # 后端代码、Servlet、Service、Dao
+
 │ ├── webapp/ # HTML 页面、静态资源
+
 │ └── resources/ # 配置文件
+
 pom.xml # Maven 依赖
+
 README.md # 项目说明
 
 
@@ -36,10 +42,15 @@ README.md # 项目说明
 
 ## 快速运行
 1. 克隆项目到本地
+   
 git clone https://github.com/Alhaithem67/JavaWeb_TuShuGuan.git
+
 2.创建数据库，执行 SQL 脚本
+
 3.修改数据库连接配置（用户名、密码）
+
 4.使用 Tomcat 启动项目
+
 5.访问地址：http://localhost:8080/user_load.html
 
 ---
